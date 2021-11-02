@@ -41,7 +41,7 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icons8-dns-96.ico</ApplicationIcon>
+    <ApplicationIcon>icons8-switch-96.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -117,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons8-dns-96.ico" />
+    <Content Include="icons8-switch-96.ico" />
+    <None Include="Resources\list.png" />
+    <None Include="Resources\exit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

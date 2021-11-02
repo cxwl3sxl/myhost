@@ -29,6 +29,7 @@ namespace MyHost
             LoadCurrentHost();
             LoadPrivateHost();
             dataGridView1.DataSource = _host;
+            SyncMenu();
         }
 
         void LoadCurrentHost()
@@ -130,20 +131,27 @@ namespace MyHost
             var item = GetCurrent();
             if (item == null) return;
 
+            UseHost(item);
+        }
+
+        void UseHost(HostFileInfo fileInfo)
+        {
             try
             {
                 var file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows),
                     @"System32\drivers\etc\hosts");
-                File.WriteAllText(file, File.ReadAllText(item.File));
+                File.WriteAllText(file, File.ReadAllText(fileInfo.File));
 
                 foreach (var hostFileInfo in _host)
                 {
                     hostFileInfo.IsCurrent = false;
                 }
 
-                item.IsCurrent = true;
+                fileInfo.IsCurrent = true;
                 dataGridView1.Refresh();
+                SyncMenu();
                 SetStatus("应用成功");
+                MessageBox.Show($"{fileInfo.Name}已经成功启用", "温馨提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -183,6 +191,92 @@ namespace MyHost
             File.WriteAllText(file, rbContent.Text);
             rbContent.Tag = null;
             SetStatus("保存成功");
+        }
+
+        private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var fileName = SetFileName.ShowInput(null, this);
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                SetStatus("请输入新的文件名称");
+                return;
+            }
+
+            var target = Path.Combine(_hostDir, $"{fileName}.txt");
+            if (File.Exists(target))
+            {
+                SetStatus("该文件已经存在");
+                return;
+            }
+
+            File.WriteAllText(target, $"#This is a host file create at {DateTime.Now}");
+
+            _host.Add(new HostFileInfo()
+            {
+                File = target,
+                IsCurrent = false,
+                Name = fileName
+            });
+
+            SetEditFile(target);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+            Visible = false;
+            e.Cancel = true;
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Visible = true;
+            WindowState = FormWindowState.Normal;
+            BringToFront();
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            notifyIcon1.Visible = false;
+            notifyIcon1.Dispose();
+            Environment.Exit(0);
+        }
+
+        private void 退出ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            notifyIcon1.Visible = false;
+            notifyIcon1.Dispose();
+            Environment.Exit(0);
+        }
+
+        void SyncMenu()
+        {
+            host文件ToolStripMenuItem.DropDownItems.Clear();
+            foreach (var info in _host)
+            {
+                host文件ToolStripMenuItem.DropDownItems.Add(
+                    new ToolStripMenuItem(info.Name, info.Image, HostFileMenu_Click) { Tag = info });
+            }
+        }
+
+        private void HostFileMenu_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem menuItem)) return;
+            if (!(menuItem.Tag is HostFileInfo hostFile)) return;
+            UseHost(hostFile);
+        }
+
+        private void rbContent_TextChanged(object sender, EventArgs e)
+        {
+            //for (var i = 0; i < rbContent.Lines.Length; i++)
+            //{
+            //    var line = rbContent.Lines[0];
+            //    if (!line.StartsWith("#")) continue;
+            //    rbContent.Select(rbContent.GetFirstCharIndexFromLine(i), line.Length);
+            //    rbContent.SelectionColor = Color.Green;
+            //    rbContent.Select(0, 0);
+            //    rbContent.SelectionColor = Color.Black;
+            //}
         }
     }
 
