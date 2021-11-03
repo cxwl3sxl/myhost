@@ -83,9 +83,9 @@ namespace MyHost.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap list {
+        internal static System.Drawing.Bitmap list_2f {
             get {
-                object obj = ResourceManager.GetObject("list", resourceCulture);
+                object obj = ResourceManager.GetObject("list_2f", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

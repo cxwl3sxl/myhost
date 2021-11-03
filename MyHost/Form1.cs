@@ -339,6 +339,21 @@ namespace MyHost
                 }
             });
         }
+
+        private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/cxwl3sxl/myhost");
+        }
+
+        private void giteeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://gitee.com/horntec_admin/my-host");
+        }
+
+        private void 关于AToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"一个开源的Windows Host文件管理器！{Environment.NewLine} v1.0", "关于", MessageBoxButtons.OK);
+        }
     }
 
     public class HostFileInfo
