@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MyHost
@@ -11,10 +14,12 @@ namespace MyHost
     {
         private readonly BindingList<HostFileInfo> _host = new BindingList<HostFileInfo>();
         private readonly string _hostDir;
+        private readonly Color _defaultTextColor;
 
         public Form1()
         {
             InitializeComponent();
+            _defaultTextColor = rbContent.SelectionColor;
             _hostDir = Path.Combine(Directory.GetCurrentDirectory(), "hosts");
             if (!Directory.Exists(_hostDir))
             {
@@ -179,9 +184,13 @@ namespace MyHost
 
         void SetEditFile(string file)
         {
+            rbContent.Clear();
+            rbContent.Select(0, 0);
+            rbContent.SelectionColor = _defaultTextColor;
             rbContent.Text = File.ReadAllText(file);
             rbContent.Tag = file;
             SetStatus($"正在编辑：{Path.GetFileNameWithoutExtension(file)}");
+            UpdateColor();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -255,7 +264,7 @@ namespace MyHost
             foreach (var info in _host)
             {
                 host文件ToolStripMenuItem.DropDownItems.Add(
-                    new ToolStripMenuItem(info.Name, info.Image, HostFileMenu_Click) { Tag = info });
+                    new ToolStripMenuItem(info.Name, info.Image, HostFileMenu_Click) {Tag = info});
             }
         }
 
@@ -266,17 +275,69 @@ namespace MyHost
             UseHost(hostFile);
         }
 
-        private void rbContent_TextChanged(object sender, EventArgs e)
+        void UpdateColor()
         {
-            //for (var i = 0; i < rbContent.Lines.Length; i++)
-            //{
-            //    var line = rbContent.Lines[0];
-            //    if (!line.StartsWith("#")) continue;
-            //    rbContent.Select(rbContent.GetFirstCharIndexFromLine(i), line.Length);
-            //    rbContent.SelectionColor = Color.Green;
-            //    rbContent.Select(0, 0);
-            //    rbContent.SelectionColor = Color.Black;
-            //}
+            var txt = rbContent.Text;
+            var length = 0;
+            var oldIndex = rbContent.SelectionStart;
+            var oldLength = rbContent.SelectionLength;
+            for (var i = txt.Length - 1; i >= 0; i--)
+            {
+                if (txt[i] == '\n')
+                {
+                    length = 1;
+                    continue;
+                }
+
+                if (txt[i] == '#')
+                {
+                    rbContent.Select(i, length);
+                    rbContent.SelectionColor = Color.Green;
+                    rbContent.Select(0, 0);
+                    rbContent.SelectionColor = _defaultTextColor;
+                    continue;
+                }
+
+                length++;
+            }
+
+            rbContent.Select(oldIndex, oldLength);
+            rbContent.SelectionColor = _defaultTextColor;
+        }
+
+        private void rbContent_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.S && e.Control)
+            {
+                DelayInvoke(1000, () => btnSave_Click(null, null));
+            }
+
+            if (e.KeyCode == Keys.D3 && e.Shift)
+            {
+                rbContent.SelectionColor = Color.Green;
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                rbContent.SelectionColor = _defaultTextColor;
+            }
+        }
+
+        void DelayInvoke(int time, Action action)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(time);
+                try
+                {
+                    Invoke(action);
+                }
+                // ReSharper disable once EmptyGeneralCatchClause
+                catch
+                {
+
+                }
+            });
         }
     }
 

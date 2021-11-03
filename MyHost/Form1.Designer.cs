@@ -36,6 +36,10 @@ namespace MyHost
             this.Status = new System.Windows.Forms.DataGridViewImageColumn();
             this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.应用ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSave = new System.Windows.Forms.Button();
             this.rbContent = new System.Windows.Forms.RichTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -46,13 +50,9 @@ namespace MyHost
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.iconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.应用ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.host文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -137,6 +137,38 @@ namespace MyHost
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(101, 92);
             // 
+            // 编辑ToolStripMenuItem
+            // 
+            this.编辑ToolStripMenuItem.Image = global::MyHost.Properties.Resources.编辑;
+            this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
+            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.编辑ToolStripMenuItem.Text = "编辑";
+            this.编辑ToolStripMenuItem.Click += new System.EventHandler(this.编辑ToolStripMenuItem_Click);
+            // 
+            // 复制ToolStripMenuItem
+            // 
+            this.复制ToolStripMenuItem.Image = global::MyHost.Properties.Resources.复制;
+            this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
+            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.复制ToolStripMenuItem.Text = "复制";
+            this.复制ToolStripMenuItem.Click += new System.EventHandler(this.复制ToolStripMenuItem_Click);
+            // 
+            // 删除ToolStripMenuItem
+            // 
+            this.删除ToolStripMenuItem.Image = global::MyHost.Properties.Resources.删除;
+            this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.删除ToolStripMenuItem.Text = "删除";
+            this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
+            // 
+            // 应用ToolStripMenuItem
+            // 
+            this.应用ToolStripMenuItem.Image = global::MyHost.Properties.Resources.对勾;
+            this.应用ToolStripMenuItem.Name = "应用ToolStripMenuItem";
+            this.应用ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.应用ToolStripMenuItem.Text = "应用";
+            this.应用ToolStripMenuItem.Click += new System.EventHandler(this.应用ToolStripMenuItem_Click);
+            // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -157,7 +189,7 @@ namespace MyHost
             this.rbContent.Size = new System.Drawing.Size(530, 403);
             this.rbContent.TabIndex = 0;
             this.rbContent.Text = "";
-            this.rbContent.TextChanged += new System.EventHandler(this.rbContent_TextChanged);
+            this.rbContent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rbContent_KeyDown);
             // 
             // statusStrip1
             // 
@@ -234,6 +266,13 @@ namespace MyHost
             this.新建ToolStripMenuItem.Text = "新建";
             this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
             // 
+            // 退出ToolStripMenuItem
+            // 
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.iconContextMenu;
@@ -242,13 +281,6 @@ namespace MyHost
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
-            // 退出ToolStripMenuItem
-            // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.退出ToolStripMenuItem.Text = "退出";
-            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
-            // 
             // iconContextMenu
             // 
             this.iconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -256,38 +288,6 @@ namespace MyHost
             this.退出ToolStripMenuItem1});
             this.iconContextMenu.Name = "iconContextMenu";
             this.iconContextMenu.Size = new System.Drawing.Size(128, 48);
-            // 
-            // 编辑ToolStripMenuItem
-            // 
-            this.编辑ToolStripMenuItem.Image = global::MyHost.Properties.Resources.编辑;
-            this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
-            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.编辑ToolStripMenuItem.Text = "编辑";
-            this.编辑ToolStripMenuItem.Click += new System.EventHandler(this.编辑ToolStripMenuItem_Click);
-            // 
-            // 复制ToolStripMenuItem
-            // 
-            this.复制ToolStripMenuItem.Image = global::MyHost.Properties.Resources.复制;
-            this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
-            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.复制ToolStripMenuItem.Text = "复制";
-            this.复制ToolStripMenuItem.Click += new System.EventHandler(this.复制ToolStripMenuItem_Click);
-            // 
-            // 删除ToolStripMenuItem
-            // 
-            this.删除ToolStripMenuItem.Image = global::MyHost.Properties.Resources.删除;
-            this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.删除ToolStripMenuItem.Text = "删除";
-            this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
-            // 
-            // 应用ToolStripMenuItem
-            // 
-            this.应用ToolStripMenuItem.Image = global::MyHost.Properties.Resources.对勾;
-            this.应用ToolStripMenuItem.Name = "应用ToolStripMenuItem";
-            this.应用ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.应用ToolStripMenuItem.Text = "应用";
-            this.应用ToolStripMenuItem.Click += new System.EventHandler(this.应用ToolStripMenuItem_Click);
             // 
             // host文件ToolStripMenuItem
             // 

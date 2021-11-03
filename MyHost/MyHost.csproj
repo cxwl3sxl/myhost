@@ -41,7 +41,7 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icons8-switch-96.ico</ApplicationIcon>
+    <ApplicationIcon>52373_black_network_red.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -116,6 +116,7 @@
     <None Include="Resources\编辑.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="52373_black_network_red.ico" />
     <Content Include="icons8-dns-96.ico" />
     <Content Include="icons8-switch-96.ico" />
     <None Include="Resources\list.png" />
